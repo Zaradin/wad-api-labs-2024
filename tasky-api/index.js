@@ -5,6 +5,7 @@ import tasksRouter from "./api/tasks";
 dotenv.config();
 
 const app = express();
+app.use(express.json());
 
 const port = process.env.PORT;
 
