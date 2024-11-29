@@ -1,11 +1,14 @@
 import dotenv from "dotenv";
 import express from "express";
 import tasksRouter from "./api/tasks";
+import usersRouter from "./api/users";
 import "./db";
 
 dotenv.config();
 
 const errHandler = (err, req, res, next) => {
+    // eslint-disable-line
+
     /* if the error in development then send stack trace to display whole error,
     if it's in production then just send error message  */
     if (process.env.NODE_ENV === "production") {
@@ -22,6 +25,9 @@ app.use(express.json());
 const port = process.env.PORT;
 
 app.use("/api/tasks", tasksRouter);
+
+app.use("/api/users", usersRouter);
+
 app.use(errHandler);
 
 app.listen(port, () => {
