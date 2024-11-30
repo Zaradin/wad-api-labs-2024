@@ -12,28 +12,39 @@ router.get("/", async (req, res) => {
 });
 
 // register(Create)/Authenticate User
+// register(Create)/Authenticate User
 router.post("/", async (req, res) => {
-    if (req.query.action === "register") {
-        //if action is 'register' then save to DB
-        await User(req.body).save();
-        res.status(201).json({
-            code: 201,
-            msg: "Successful created new user.",
-        });
-    } else {
-        //Must be an authenticate then!!! Query the DB and check if there's a match
-        const user = await User.findOne(req.body);
-        if (!user) {
-            return res
-                .status(401)
-                .json({ code: 401, msg: "Authentication failed" });
-        } else {
-            return res.status(200).json({
-                code: 200,
-                msg: "Authentication Successful",
-                token: "TEMPORARY_TOKEN",
+    try {
+        if (req.query.action === "register") {
+            // If action is 'register', save to DB
+            const newUser = new User(req.body);
+            await newUser.save();
+            return res.status(201).json({
+                code: 201,
+                msg: "Successfully created new user.",
             });
+        } else {
+            // Authenticate user: query the DB and check if there's a match
+            const user = await User.findOne(req.body);
+            if (!user) {
+                return res.status(401).json({
+                    code: 401,
+                    msg: "Authentication failed",
+                });
+            } else {
+                return res.status(200).json({
+                    code: 200,
+                    msg: "Authentication Successful",
+                    token: "TEMPORARY_TOKEN",
+                });
+            }
         }
+    } catch (error) {
+        return res.status(400).json({
+            code: 400,
+            msg: "An error occurred",
+            error: error.message,
+        });
     }
 });
 
