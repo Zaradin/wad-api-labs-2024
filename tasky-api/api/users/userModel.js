@@ -14,6 +14,7 @@ const UserSchema = new Schema({
                     value
                 );
             },
+            /* eslint-disable */
             message: (props) =>
                 `Password must be at least 8 characters long and include at least one letter, one digit, and one special character.`,
         },
