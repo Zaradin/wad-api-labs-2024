@@ -7,6 +7,7 @@ import cors from "cors";
 
 dotenv.config();
 
+/* eslint-disable */
 const errHandler = (err, req, res, next) => {
     // eslint-disable-line
 
